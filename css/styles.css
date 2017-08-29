@@ -1,0 +1,34 @@
+.arrow_box {
+	position: relative;
+	background: #3498db;
+	border: 4px solid #3498db;
+    color:#fff;
+    font-size:18pt;
+}
+.arrow_box:after, .arrow_box:before {
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(52, 152, 219, 0);
+	border-top-color: #3498db;
+	border-width: 30px;
+	margin-left: -30px;
+}
+.arrow_box:before {
+	border-color: rgba(52, 152, 219, 0);
+	border-top-color: #3498db;
+	border-width: 36px;
+	margin-left: -36px;
+}
+#versus{
+    margin-bottom:90px;
+}
+
