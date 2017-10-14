@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
-let typingTimer;                
-let doneTypingInterval = 2000; 
+let typingTimer;
+let doneTypingInterval = 2000;
   $('#user1').on('keyup',function(e){
        clearTimeout(typingTimer);
   typingTimer = setTimeout(doneTyping, doneTypingInterval);
@@ -48,7 +48,7 @@ let doneTypingInterval = 2000;
   typingTimer = setTimeout(doneTyping, doneTypingInterval);
 
     let username2 = e.target.value;
-          
+
     $('#versus').html("<br><br><center><h1>v/s</h1></center>");
 
     //AJAX request
@@ -82,11 +82,11 @@ let doneTypingInterval = 2000;
     });
   });
 
- 
 
 
 
-//on keydown, clear the countdown 
+
+//on keydown, clear the countdown
 $('#user1','#user2').on('keydown', function () {
   clearTimeout(typingTimer);
 });
@@ -113,9 +113,10 @@ $('#compare').on('click',function(){
     }).done(function(response){
         var noOfPublicRepos = response.public_repos;
         var noOfPublicGists = response.public_gists;
+        var noofPrivateRepos = response.total_private_repos;
         var followers = response.followers;
         var following = response.following;
-         var score1 = (4*noOfPublicRepos + 3*noOfPublicGists + 7*followers + (-0.5)*following )/10;
+         var score1 = (4*noOfPublicRepos + 3*noOfPublicGists + 2.5*noofPrivateRepos + 7*followers + (-0.5)*following )/10;
         $('#score1').html(`<h3>Your Score is ${score1}</h3>`);
     let username2 = document.getElementById('user2').value;
         $.ajax({
@@ -127,9 +128,10 @@ $('#compare').on('click',function(){
     }).done(function(response){
         var noOfPublicRepos = response.public_repos;
         var noOfPublicGists = response.public_gists;
+        var noofPrivateRepos = response.total_private_repos;
         var followers = response.followers;
         var following = response.following;
-        var score2 = (4*noOfPublicRepos + 3*noOfPublicGists + 7*followers + (-0.5)*following )/10;
+        var score2 = (4*noOfPublicRepos + 3*noOfPublicGists + 2.5*noofPrivateRepos +  7*followers + (-0.5)*following)/10;
         $('#score2').html(`<h3>Your Score is ${score2}</h3>`);
         if(score1 > score2){
         $('#winner1').append(`<div class="arrow_box">Winner!</div>`);
@@ -137,12 +139,12 @@ $('#compare').on('click',function(){
         $('#winner2').append(`<div class="arrow_box">Winner!</div>`);
     }
     });
-    
-    
+
+
     });
 
-    
-        
+
+
 });
 
 
