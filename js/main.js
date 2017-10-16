@@ -1,29 +1,29 @@
-$(document).ready(function () {
-  let params = '?per_page=100'
-  let typingTimer;
-  let doneTypingInterval = 2000;
-  $('#user1').on('keyup', function (e) {
-    clearTimeout(typingTimer);
-    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+$(document).ready(function(){
+
+let typingTimer;                
+let doneTypingInterval = 2000; 
+  $('#user1').on('keyup',function(e){
+       clearTimeout(typingTimer);
+  typingTimer = setTimeout(doneTyping, doneTypingInterval);
 
 
-    $('#versus').html("<br><br><br><center><h1>v/s</h1></center>");
+      $('#versus').html("<br><br><br><center><h1>v/s</h1></center>");
     let username1 = e.target.value;
     //AJAX request
     $.ajax({
-      url: 'https://api.github.com/users/' + username1,
-      data: {
-        client_id: 'b71c2c1c952382dc0aab',
-        client_secret: '579729a9a22a970009b5b8afaed90a1cc13675c3'
+      url : 'https://api.github.com/users/'+username1,
+      data : {
+        client_id : 'b71c2c1c952382dc0aab',
+        client_secret : '579729a9a22a970009b5b8afaed90a1cc13675c3'
       }
-    }).done(function (response) {
+    }).done(function(response){
       $.ajax({
-        url: 'https://api.github.com/users/' + username1 + '/repos',
-        data: {
-          client_id: 'b71c2c1c952382dc0aab',
-          client_secret: '579729a9a22a970009b5b8afaed90a1cc13675c3',
-          sort: 'created : asc',
-          per_page: 5
+        url : 'https://api.github.com/users/'+username1+'/repos',
+        data : {
+          client_id : 'b71c2c1c952382dc0aab',
+          client_secret : '579729a9a22a970009b5b8afaed90a1cc13675c3',
+          sort : 'created : asc',
+          per_page : 5
         }
       })
       $('#avatar1').html(`
@@ -43,29 +43,29 @@ $(document).ready(function () {
 
 
 
-  $('#user2').on('keyup', function (e) {
-    clearTimeout(typingTimer);
-    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+  $('#user2').on('keyup',function(e){
+      clearTimeout(typingTimer);
+  typingTimer = setTimeout(doneTyping, doneTypingInterval);
 
     let username2 = e.target.value;
-
+          
     $('#versus').html("<br><br><center><h1>v/s</h1></center>");
 
     //AJAX request
     $.ajax({
-      url: 'https://api.github.com/users/' + username2,
-      data: {
-        client_id: 'b71c2c1c952382dc0aab',
-        client_secret: '579729a9a22a970009b5b8afaed90a1cc13675c3'
+      url : 'https://api.github.com/users/'+username2,
+      data : {
+        client_id : 'b71c2c1c952382dc0aab',
+        client_secret : '579729a9a22a970009b5b8afaed90a1cc13675c3'
       }
-    }).done(function (response) {
+    }).done(function(response){
       $.ajax({
-        url: 'https://api.github.com/users/' + username2 + '/repos',
-        data: {
-          client_id: 'b71c2c1c952382dc0aab',
-          client_secret: '579729a9a22a970009b5b8afaed90a1cc13675c3',
-          sort: 'created : asc',
-          per_page: 5
+        url : 'https://api.github.com/users/'+username2+'/repos',
+        data : {
+          client_id : 'b71c2c1c952382dc0aab',
+          client_secret : '579729a9a22a970009b5b8afaed90a1cc13675c3',
+          sort : 'created : asc',
+          per_page : 5
         }
       })
       $('#avatar2').html(`
@@ -82,90 +82,68 @@ $(document).ready(function () {
     });
   });
 
+ 
 
 
 
+//on keydown, clear the countdown 
+$('#user1','#user2').on('keydown', function () {
+  clearTimeout(typingTimer);
+});
 
-  //on keydown, clear the countdown 
-  $('#user1', '#user2').on('keydown', function () {
-    clearTimeout(typingTimer);
-  });
+//user is "finished typing," do something
+function doneTyping () {
+  $('#compare').show();
+}
 
-  //user is "finished typing," do something
-  function doneTyping() {
-    $('#compare').show();
-  }
+$('#compare').on('click',function(){
 
-  $('#compare').on('click', function () {
-
-    if (document.getElementById('user1').value == document.getElementById('user2').value) {
-      alert("Please compare two different users!");
-      return false;
-    }
-
-    let username1 = document.getElementById('user1').value;
-    $.ajax({
-      url: 'https://api.github.com/users/' + username1,
-      data: {
-        client_id: 'b71c2c1c952382dc0aab',
-        client_secret: '579729a9a22a970009b5b8afaed90a1cc13675c3'
-      }
-    }).done(function (response) {
-      var noOfPublicRepos = response.public_repos;
-      var noOfPublicGists = response.public_gists;
-      var followers = response.followers;
-      var following = response.following;
-      $.ajax({
-        url: 'https://api.github.com/users/' + username1 + '/repos' + params,
-        data: {
-          client_id: 'b71c2c1c952382dc0aab',
-          client_secret: '579729a9a22a970009b5b8afaed90a1cc13675c3'
+        if(document.getElementById('user1').value == document.getElementById('user2').value ){
+            alert("Please compare two different users!");
+            return false;
         }
-      }).done(function (response) {
-        var totalstars = 0;
-        response.forEach(function (element) {
-          totalstars += element.stargazers_count;
-        }, this);
-        var score1 = (4 * noOfPublicRepos + 3 * noOfPublicGists + 5 * followers + (-0.5) * following + 2 * totalstars) / 10;
+
+        let username1 = document.getElementById('user1').value;
+        $.ajax({
+      url : 'https://api.github.com/users/'+username1,
+      data : {
+        client_id : 'b71c2c1c952382dc0aab',
+        client_secret : '579729a9a22a970009b5b8afaed90a1cc13675c3'
+      }
+    }).done(function(response){
+        var noOfPublicRepos = response.public_repos;
+        var noOfPublicGists = response.public_gists;
+        var followers = response.followers;
+        var following = response.following;
+         var score1 = (4*noOfPublicRepos + 3*noOfPublicGists + 7*followers + (-0.5)*following )/10;
         $('#score1').html(`<h3>Your Score is ${score1}</h3>`);
-      });
-      let username2 = document.getElementById('user2').value;
-      $.ajax({
-        url: 'https://api.github.com/users/' + username2,
-        data: {
-          client_id: 'b71c2c1c952382dc0aab',
-          client_secret: '579729a9a22a970009b5b8afaed90a1cc13675c3'
-        }
-      })
-      var noOfPublicRepos = response.public_repos;
-      var noOfPublicGists = response.public_gists;
-      var followers = response.followers;
-      var following = response.following;
-      $.ajax({
-        url: 'https://api.github.com/users/' + username2 + '/repos' + params,
-        data: {
-          client_id: 'b71c2c1c952382dc0aab',
-          client_secret: '579729a9a22a970009b5b8afaed90a1cc13675c3'
-        }
-      }).done(function (response) {
-        var totalstars = 0;
-        response.forEach(function (element) {
-          totalstars += element.stargazers_count;
-        }, this);
-        var score2 = (4 * noOfPublicRepos + 3 * noOfPublicGists + 5 * followers + (-0.5) * following + 2 * totalstars) / 10;
-        $('#score2').html(`<h3>Your Score is ${score2}</h3>`);
-      });
-
-      if (score1 > score2) {
-        $('#winner1').append(`<div class="arrow_box">Winner!</div>`);
-      } else {
-        $('#winner2').append(`<div class="arrow_box">Winner!</div>`);
+    let username2 = document.getElementById('user2').value;
+        $.ajax({
+      url : 'https://api.github.com/users/'+username2,
+      data : {
+        client_id : 'b71c2c1c952382dc0aab',
+        client_secret : '579729a9a22a970009b5b8afaed90a1cc13675c3'
       }
+    }).done(function(response){
+        var noOfPublicRepos = response.public_repos;
+        var noOfPublicGists = response.public_gists;
+        var followers = response.followers;
+        var following = response.following;
+        var score2 = (4*noOfPublicRepos + 3*noOfPublicGists + 7*followers + (-0.5)*following )/10;
+        $('#score2').html(`<h3>Your Score is ${score2}</h3>`);
+        if(score1 > score2){
+        $('#winner1').append(`<div class="arrow_box">Winner!</div>`);
+    }else{
+        $('#winner2').append(`<div class="arrow_box">Winner!</div>`);
+    }
+    });
+    
+    
     });
 
-
-  });
-
+    
+        
+});
 
 
 });
